@@ -1,0 +1,102 @@
+
+
+abstract class WebInteface {
+  void send(Map<String, String> message);
+}
+
+// need conditional import
+class Webx implements WebInteface {
+  Function(Map<String, String>) onMessage;
+  Webx(this.onMessage, String assetUrl) {}
+
+  @override
+  void send(Map<String, String> message) {}
+}
+
+// we need proto or freezed steps that we can send to the js editors.
+// we need a wrapper around Editor set that manages the
+
+// we need a standard api that our editor wrappers know, like beginEdit, focus
+// we need a widget wrapper
+
+// maybe move to proto?
+class EditorStep {
+  String key;
+  Size? size;
+  EditorStep(this.key);
+}
+
+class CodemirrorStep extends EditorStep {
+  CodemirrorStep(super.key);
+}
+
+abstract class EditorContent {}
+
+
+
+typedef Prosemirror = Editor;
+typedef ProsemirrorController = EditorChannel;
+
+class Editor extends StatefulWidget {
+  late EditorChannel channel;
+
+  Editor({super.key, EditorChannel? channel}) {
+    this.channel = channel ?? EditorChannel();
+  }
+
+  @override
+  State<Editor> createState() => _EditorState();
+}
+
+class _EditorState extends State<Editor> {
+  EditorDiv div = EditorDiv();
+  @override
+  void initState() {}
+
+  @override
+  void dispose() {
+    widget.channel.update = badUpdate;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return div.widget;
+  }
+}
+
+var text =
+    """Parses the HTML fragment and sets it as the contents of this element. This ensures that the generated content follows the sanitization rules specified by the validator or treeSanitizer.
+
+If the default <a href='javascript:alert("")'> validation </a>behavior is too restrictive then a new NodeValidator should be created, either extending or wrapping a default validator and overriding the validation APIs.""";
+
+class EditorDiv {
+  late html.DivElement div;
+  late String viewType;
+  static int counter = 0;
+
+  EditorDiv() {
+    var b = StringBuffer();
+    b.write("""<style scoped>
+  div:focus {
+    outline: none
+  }
+</style><div style='user-select: text; color: black; position: fixed; padding-top: 64px' contenteditable  id='pm'  >$text</div>""");
+
+    div = html.DivElement()
+      ..style.width = '100%'
+      ..style.height = '100%'
+      ..setInnerHtml(b.toString(),
+          treeSanitizer: html.NodeTreeSanitizer.trusted);
+    viewType = "DivWeb-${counter++}";
+
+    // we should try to set up in javascript so we can
+
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(viewType, (_) {
+      return div;
+    });
+  }
+
+  Widget get widget => HtmlElementView(viewType: viewType);
+}
