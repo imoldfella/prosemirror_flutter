@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+
+
+message Spreadsheet {
+    // style options for entire spreadsheet
+
+    repeated SpreadsheetTab tab = 1;
+}
+
+message SpreadsheetTab {
+
+}
+
+message SpreadsheetTx {
+
+}
+
+
+message Doc {
+
+}
+
+
+// our directories allow arbitrary order, like an outline.
+// sorting is a style. 
+message Directory {
+    
+
+}
+
+
+// our primary storage is the full text index.
+// each generation of index has a list of new tuples and a full text index to them
+message Page {
+
+}
+
+message Datum {
+
+}
+

@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'dart:collection';
+import 'package:flutter/foundation.dart';
+import 'package:tuple/tuple.dart';
 
 import 'div.dart';
 
@@ -27,6 +29,8 @@ class Query<T> {}
 
 // we are going to get our updates from the database which we can then
 
+// wrap Uint8List to give it equality and hashes
+
 // Maybe
 class ListObserver<T> extends ChangeNotifier {
   List<Replace<T>> delta = [];
@@ -35,6 +39,8 @@ class ListObserver<T> extends ChangeNotifier {
 
   List<T> Function(int snapshot, int begin, int end) load;
   ListObserver(this.load);
+
+  anchor(int y) {}
 }
 
 class HtmlScrollController {
@@ -42,11 +48,6 @@ class HtmlScrollController {
   double offset = 0;
 
   scrollTo(int x) {}
-}
-
-class Replace<T> {
-  int start = 0, begin = 0;
-  List<T> insert = [];
 }
 
 // is the normal builder enough? a controller might avoid the animated list complexity
@@ -75,6 +76,26 @@ class _HtmlListState<T> extends State<HtmlList<T>> {
   @override
   Widget build(BuildContext context) {
     return div.widget;
+  }
+}
+
+class HtmGrid<T> extends StatefulWidget {
+  ListObserver<Uint8List> rowList, colList;
+  ValueObserver<T> value;
+
+  HtmGrid({super.key, required this.rowList, required this.colList});
+
+  @override
+  State<HtmGrid<T>> createState() => _HtmGridState<T>();
+}
+
+class _HtmGridState<T> extends State<HtmGrid<T>> {
+  final div = EditorDiv(onMessage: (HtmlMessage e) {});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }
 

@@ -1,0 +1,15 @@
+
+syntax =  "proto3";
+
+// will be encoded as json? does any work for this?
+
+message WebTx {
+    repeated Update update = 1;
+}
+message Update {
+
+}
+message WebEvent {
+
+    
+}
